@@ -11,6 +11,7 @@ const { accessKey } = Astro.props;
   action="https://api.web3forms.com/submit"
   method="POST"
   class="space-y-6"
+  novalidate
 >
   <!-- Hidden fields -->
   <input type="hidden" name="access_key" value={accessKey} />
@@ -32,6 +33,7 @@ const { accessKey } = Astro.props;
       required
       class="w-full bg-bg-main border-2 border-text-muted/30 px-4 py-3 rounded-none focus:border-primary focus:outline-none transition-colors"
     />
+    <p class="hidden text-red-500 text-sm mt-1" data-error-for="name">Dit veld is verplicht.</p>
   </div>
 
   <!-- Email -->
@@ -46,6 +48,7 @@ const { accessKey } = Astro.props;
       required
       class="w-full bg-bg-main border-2 border-text-muted/30 px-4 py-3 rounded-none focus:border-primary focus:outline-none transition-colors"
     />
+    <p class="hidden text-red-500 text-sm mt-1" data-error-for="email">Vul een geldig e-mailadres in.</p>
   </div>
 
   <!-- Phone -->
@@ -78,6 +81,7 @@ const { accessKey } = Astro.props;
       <option value="Algemene vraag">Algemene vraag</option>
       <option value="Anders">Anders</option>
     </select>
+    <p class="hidden text-red-500 text-sm mt-1" data-error-for="subject-type">Selecteer een onderwerp.</p>
   </div>
 
   <!-- Message -->
@@ -92,6 +96,7 @@ const { accessKey } = Astro.props;
       required
       class="w-full bg-bg-main border-2 border-text-muted/30 px-4 py-3 rounded-none focus:border-primary focus:outline-none resize-none transition-colors"
     ></textarea>
+     <p class="hidden text-red-500 text-sm mt-1" data-error-for="message">Vul een bericht in.</p>
   </div>
 
   <!-- Status Message -->
@@ -112,6 +117,39 @@ const { accessKey } = Astro.props;
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       
+      // Reset validation state
+      const inputs = form.querySelectorAll('input, select, textarea');
+      let isValid = true;
+      
+      inputs.forEach(input => {
+          const errorEl = form.querySelector(`[data-error-for="${input.id}"]`);
+          input.classList.remove('border-red-500');
+          if (errorEl) errorEl.classList.add('hidden');
+          
+          if ((input as HTMLInputElement).checkValidity() === false) {
+              isValid = false;
+              input.classList.add('border-red-500');
+              if (errorEl) {
+                  errorEl.classList.remove('hidden');
+                  // Customize message based on type
+                   if (input.validity.valueMissing) {
+                      if(input.id === 'subject-type') errorEl.textContent = 'Selecteer een onderwerp.';
+                      else errorEl.textContent = 'Dit veld is verplicht.';
+                   } else if (input.validity.typeMismatch && input.type === 'email') {
+                       errorEl.textContent = 'Vul een geldig e-mailadres in.';
+                   }
+              }
+          }
+           // Add input listener to clear error on typing
+           input.addEventListener('input', () => {
+             input.classList.remove('border-red-500');
+             const err = form.querySelector(`[data-error-for="${input.id}"]`);
+             if(err) err.classList.add('hidden');
+           }, { once: true });
+      });
+
+      if (!isValid) return;
+
       // Set loading state
       submitButton.disabled = true;
       submitButton.textContent = 'VERZENDEN...';
