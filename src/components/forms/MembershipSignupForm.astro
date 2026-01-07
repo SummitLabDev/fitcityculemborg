@@ -19,8 +19,7 @@ const allPricing = {
 };
 
 function formatButtonText(name: string) {
-  const cleanName = name.replace(/DEAL/i, '').replace(/ONLY/i, '').trim();
-  return `KIES ${cleanName.toUpperCase()}`;
+  return `KIES ${name.toUpperCase()}`;
 }
 
 function getIcons(id: string): ("fitness" | "kickboxing" | "ladies")[] {
@@ -1038,7 +1037,15 @@ input[type="checkbox"]:focus {
 
         // Personal Info
         if (summaryEls.rName) summaryEls.rName.textContent = inputs.full_name.value;
-        if (summaryEls.rDob) summaryEls.rDob.textContent = inputs.birthdate.value;
+        if (summaryEls.rDob) {
+            const dateVal = inputs.birthdate.value;
+             if (dateVal) {
+                const [year, month, day] = dateVal.split('-');
+                summaryEls.rDob.textContent = `${day}-${month}-${year}`;
+            } else {
+                summaryEls.rDob.textContent = '-';
+            }
+        }
         if (summaryEls.rEmail) summaryEls.rEmail.textContent = inputs.email.value;
         if (summaryEls.rPhone) summaryEls.rPhone.textContent = inputs.phone.value;
         
@@ -1245,10 +1252,53 @@ input[type="checkbox"]:focus {
                  return;
              }
              
-             // Submit
+             // Submit logic
              nextBtn.disabled = true;
              nextBtn.textContent = 'BEZIG...';
-             form.requestSubmit();
+             
+             // Collect Data
+             const formData = new FormData(form);
+             const jsonData = Object.fromEntries(formData.entries());
+
+             // Send to Web3Forms
+             fetch('https://api.web3forms.com/submit', {
+                 method: 'POST',
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'Accept': 'application/json'
+                 },
+                 body: JSON.stringify(jsonData)
+             })
+             .then(async (response) => {
+                 const result = await response.json();
+                 if (response.status === 200) {
+                     // Success!
+                     // Save summary to session for success page
+                     const sessionData = {
+                         planName: hiddenInputs.name.value,
+                         planPrice: hiddenInputs.price.value,
+                         planTerm: hiddenInputs.term.value,
+                         startDate: summaryEls.start?.textContent || '-',
+                         fullName: inputs.full_name.value,
+                         email: inputs.email.value
+                     };
+                     sessionStorage.setItem('fitcity_signup_data', JSON.stringify(sessionData));
+                     
+                     // Redirect
+                     window.location.href = '/signup/success';
+                 } else {
+                     console.log(response);
+                     alert('Er ging iets mis. Probeer het later opnieuw. ' + (result.message || ''));
+                     nextBtn.disabled = false;
+                     nextBtn.textContent = 'INSCHRIJVING VOLTOOIEN';
+                 }
+             })
+             .catch(error => {
+                 console.log(error);
+                 alert('Er ging iets mis. Controleer je internetverbinding.');
+                 nextBtn.disabled = false;
+                 nextBtn.textContent = 'INSCHRIJVING VOLTOOIEN';
+             });
         }
     });
     

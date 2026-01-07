@@ -1,0 +1,177 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Container from '@components/ui/Container.astro';
+import { hours } from '@data/hours';
+---
+
+<BaseLayout
+  title="Inschrijving Geslaagd!"
+  description="Bedankt voor je inschrijving bij FitCity Culemborg."
+  showStickyBar={false}
+>
+  <section class="min-h-[80vh] flex items-center py-16">
+    <Container size="standard">
+      <div class="max-w-4xl mx-auto">
+        
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-primary/20 text-primary rounded-full mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <h1 class="font-display text-4xl md:text-5xl mb-4 uppercase">
+            Bedankt voor je inschrijving!
+          </h1>
+          <p class="text-text-muted text-lg max-w-2xl mx-auto">
+            Welkom bij FitCity Culemborg. We hebben je gegevens succesvol ontvangen.
+            Je ontvangt binnenkort een bevestiging per e-mail.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+          
+          <!-- Signup Summary -->
+          <div class="bg-bg-secondary p-8 rounded border border-white/5 h-full relative overflow-hidden group">
+            <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+               <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 20 20"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg>
+            </div>
+
+            <h2 class="font-display text-2xl mb-6 flex items-center gap-2">
+              <span class="w-2 h-8 bg-primary block"></span>
+              JOUW LIDMAATSCHAP
+            </h2>
+
+            <div id="signup-summary-loading" class="animate-pulse space-y-4">
+              <div class="h-6 bg-white/5 rounded w-3/4"></div>
+              <div class="h-4 bg-white/5 rounded w-1/2"></div>
+              <div class="h-4 bg-white/5 rounded w-2/3"></div>
+            </div>
+
+            <div id="signup-summary-content" class="hidden space-y-6 relative z-10">
+              <div>
+                <p class="text-text-muted text-sm mb-1">Gekozen pakket</p>
+                <div class="flex items-baseline gap-3">
+                   <h3 class="font-display text-3xl text-primary" id="success-plan-name">-</h3>
+                   <span class="font-bold text-xl" id="success-plan-price">€-</span>
+                </div>
+                <p class="text-sm text-text-muted mt-1" id="success-plan-term">-</p>
+              </div>
+
+              <div class="border-t border-white/10 pt-4 space-y-3">
+                 <div>
+                    <p class="text-text-muted text-sm">Startdatum</p>
+                    <p class="font-semibold" id="success-start-date">-</p>
+                 </div>
+                 <div>
+                    <p class="text-text-muted text-sm">Naam</p>
+                    <p class="font-semibold" id="success-name">-</p>
+                 </div>
+                 <div>
+                    <p class="text-text-muted text-sm">E-mail</p>
+                    <p class="font-semibold" id="success-email">-</p>
+                 </div>
+              </div>
+
+               <div class="bg-bg-main p-4 rounded border border-white/5 mt-6">
+                <p class="text-sm text-text-muted mb-2">
+                  <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg> 
+                  Betaal je inschrijfkosten (€17,00) bij je eerste bezoek aan de balie.
+                </p>
+              </div>
+            </div>
+
+            <div id="signup-summary-error" class="hidden text-text-muted italic">
+              Geen recente inschrijving gevonden.
+            </div>
+          </div>
+
+          <!-- Opening Hours & Call to Action -->
+          <div class="space-y-8">
+            
+            <!-- Opening Hours -->
+            <div class="bg-bg-secondary p-8 rounded border border-white/5">
+              <h2 class="font-display text-2xl mb-6 flex items-center gap-2">
+                <span class="w-2 h-8 bg-primary block"></span>
+                OPENINGSTIJDEN
+              </h2>
+              <p class="text-text-muted mb-6">
+                Kom langs voor je eerste training! Meld je bij de balie om je pasje op te halen.
+              </p>
+              
+              <div class="space-y-3 font-mono text-sm">
+                
+                  <div class="flex justify-between border-b border-white/5 pb-2">
+                    <span>Maandag - Vrijdag</span>
+                    <span class="text-white">08:30 - 22:00</span>
+                  </div>
+                  <div class="flex justify-between border-b border-white/5 pb-2">
+                    <span>Zaterdag</span>
+                    <span class="text-white">09:00 - 16:00</span>
+                  </div>
+                  <div class="flex justify-between border-b border-white/5 pb-2">
+                    <span>Zondag</span>
+                    <span class="text-white">09:30 - 16:00</span>
+                  </div>
+            
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="grid grid-cols-1 gap-4">
+                <a href="/" class="btn-primary w-full text-center py-4">
+                  TERUG NAAR HOME
+                </a>
+               <a href="https://wa.me/31646872274" target="_blank" class="btn-ghost w-full text-center py-3 flex items-center justify-center gap-2">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                  Stuur ons een WhatsApp
+                </a>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </Container>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Retrieve data from sessionStorage
+    const loadingEl = document.getElementById('signup-summary-loading');
+    const contentEl = document.getElementById('signup-summary-content');
+    const errorEl = document.getElementById('signup-summary-error');
+
+    try {
+      const data = sessionStorage.getItem('fitcity_signup_data');
+      
+      if (data) {
+        const p = JSON.parse(data);
+        
+        // Populate fields
+        if(p.planName) document.getElementById('success-plan-name')!.textContent = p.planName;
+        if(p.planPrice) document.getElementById('success-plan-price')!.textContent = `€${p.planPrice}`;
+        if(p.planTerm) document.getElementById('success-plan-term')!.textContent = p.planTerm;
+        
+        if(p.startDate) document.getElementById('success-start-date')!.textContent = p.startDate;
+        if(p.fullName) document.getElementById('success-name')!.textContent = p.fullName;
+        if(p.email) document.getElementById('success-email')!.textContent = p.email;
+
+        // Show content
+        loadingEl?.classList.add('hidden');
+        contentEl?.classList.remove('hidden');
+      } else {
+        // No data found logic
+        loadingEl?.classList.add('hidden');
+        errorEl?.classList.remove('hidden');
+      }
+    } catch (e) {
+      console.error(e);
+      loadingEl?.classList.add('hidden');
+      errorEl?.classList.remove('hidden');
+    }
+  });
+</script>

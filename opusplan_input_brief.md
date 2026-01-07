@@ -131,7 +131,7 @@ Build a high-performance "Conversion Engine" that uses raw industrial aesthetics
   - [x] Step 3: SEPA payment details (IBAN, account holder, mandaat text)
   - [x] Required checkboxes (SEPA consent, privacy policy, terms)
   - [x] Form validation (IBAN format, email, required fields)
-  - [ ] Success page redirect
+  - [x] Success page redirect
   - [ ] Email notification to Rashid
 
 
